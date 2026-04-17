@@ -1,42 +1,40 @@
-import java.time.*;
-import java.util.*;
+// import java.time.LocalDate;
+// import java.util.List;
 
-public class main {
+// /**
+//  * The main driver class for the AQI prediction application.
+//  */
+// public class Main {
+//     public static void main(String[] args) {
+//         // 1. Data Retrieval (Polymorphism)
+//         AQIDataProvider dataProvider = new MySQLDataFetcher();
+//         List<AQIRecord> data = dataProvider.fetchData();
 
-    public static void main(String[] args){
+//         if (data.isEmpty()) {
+//             System.out.println("Error: No data retrieved. Please check your database connection.");
+//             return;
+//         }
 
-        List<AQIRecord> data = DataFetcher.getAQIData();
+//         // 2. Train the Model (Encapsulation of state)
+//         int lag = 7; 
+//         ARModelTrainer trainer = new ARModelTrainer(lag);
+//         ARModel trainedModel = trainer.train(data);
 
-        ARModel model = Trainer.train(data);
+//         // 3. Setup Forecasting Engine
+//         ForecastEngine engine = new ForecastEngine(trainedModel, data);
 
-        // last date in your DB
-        LocalDate lastDate = LocalDate.of(2025, 12, 31);
-
-        // user input date
-        LocalDate targetDate = LocalDate.of(2026, 3, 29);
-
-        List<Double> values = new ArrayList<>();
-        for (AQIRecord r : data){
-            values.add(r.aqi);
-        }
-
-        while (lastDate.isBefore(targetDate)){
-
-            int n = values.size();
-            double[] last7 = new double[7];
-
-            for (int i = 0; i < 7; i++){
-                last7[i] = values.get(n - 1 - i);
-            }
-
-            double next = model.predict(last7);
-
-            values.add(next);
-            lastDate = lastDate.plusDays(1);
-        }
-
-        double result = values.get(values.size() - 1);
-
-        System.out.println("AQI on " + targetDate + " = " + result);
-    }
-}
+//         // 4. Define Dates
+//         LocalDate dbEndDate = LocalDate.of(2025, 12, 31);
+//         LocalDate targetDate = LocalDate.of(2026, 3, 29);
+        
+//         // 5. Execute Forecast
+//         System.out.println("Running forecast engine...");
+//         double finalPrediction = engine.runForecast(dbEndDate, targetDate);
+        
+//         // 6. Print Results
+//         System.out.println("\n--- FORECAST RESULT ---");
+//         System.out.printf("Target Date: %s%n", targetDate);
+//         System.out.printf("Predicted AQI: %.2f%n", finalPrediction);
+//         System.out.println("-----------------------\n");
+//     }
+// }
